@@ -1367,6 +1367,19 @@ def is_windows_operating_system(request):
     else:
         return False
 
+def is_desktop_or_mobile(request):
+    if not request.META.has_key('HTTP_USER_AGENT'):
+        client_type = "desktop"
+
+    if 'iphone' in request.META['HTTP_USER_AGENT'].lower():
+        client_type = "mobile"
+    elif 'android' in request.META['HTTP_USER_AGENT'].lower():
+        client_type = "mobile"
+    else:
+        client_type = "desktop"
+
+    return client_type
+
 def get_folder_permission_recursively(username, repo_id, path):
     """ Get folder permission recursively
 

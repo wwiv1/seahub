@@ -56,7 +56,7 @@ from seahub.utils import render_error, is_org_context, \
     mkstemp, EMPTY_SHA1, HtmlDiff, gen_inner_file_get_url, \
     user_traffic_over_limit, get_file_audit_events_by_path, \
     generate_file_audit_event_type, FILE_AUDIT_ENABLED, gen_token, \
-    get_site_scheme_and_netloc, get_conf_text_ext
+    get_site_scheme_and_netloc, get_conf_text_ext, is_desktop_or_mobile
 from seahub.utils.ip import get_remote_ip
 from seahub.utils.timeutils import utc_to_local
 from seahub.utils.file_types import (IMAGE, PDF, DOCUMENT, SPREADSHEET, AUDIO,
@@ -496,15 +496,19 @@ def _file_view(request, repo_id, path):
         assert len(ONLYOFFICE_APIJS_URL) > 1
         cache.set("ONLYOFFICE_%s" % doc_key, doc_info, None)
 
-        if file_perm == 'rw' and ((not is_locked) or (is_locked and locked_by_me)) and \
-                   fileext in ONLYOFFICE_EDIT_FILE_EXTENSION:
+        client_type = is_desktop_or_mobile(request)
+
+        can_edit = False
+        if client_type == 'desktop' and file_perm == 'rw' and \
+                ((not is_locked) or (is_locked and locked_by_me)) and \
+                fileext in ONLYOFFICE_EDIT_FILE_EXTENSION:
             can_edit = True
-        else:
-            can_edit = False
 
         send_file_access_msg(request, repo, path, 'web')
+
         return render_to_response('onlyoffice/view_file_via_onlyoffice.html', {
             'ONLYOFFICE_APIJS_URL': ONLYOFFICE_APIJS_URL,
+            'client_type': client_type,
             'file_type': fileext,
             'doc_key': doc_key,
             'doc_title': doc_title,
