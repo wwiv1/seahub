@@ -6,6 +6,7 @@ import seaserv
 from seaserv import seafile_api
 
 from seahub.utils import EMPTY_SHA1, is_org_context
+from seahub.settings import ENABLE_FOLDER_PERM
 
 logger = logging.getLogger(__name__)
 
@@ -89,3 +90,20 @@ def get_library_storages(request):
 
     return user_role_storages
 
+def can_set_folder_perm_by_user(username, repo, repo_owner):
+    """ user can get/update/add/delete folder perm feature must comply with the following
+            setting: ENABLE_FOLDER_PERM
+            repo:repo is not virtual
+            permission: is admin or repo owner.
+    """
+    if not ENABLE_FOLDER_PERM:
+        return False
+    if repo.is_virtual:
+        return False
+    is_admin = is_repo_admin(username, repo.id)
+    if username != repo_owner and not is_admin:
+        return False
+    return True
+
+# TODO
+from seahub.share.utils import is_repo_admin

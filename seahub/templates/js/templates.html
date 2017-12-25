@@ -466,7 +466,7 @@
                     </ul>
                     <div class="menu-inner-divider"></div>
                     <ul>
-                        <% if (app.pageOptions.folder_perm_enabled && is_repo_owner && !is_virtual && has_been_shared_out) { %>
+                        <% if ((app.pageOptions.folder_perm_enabled && !is_virtual) && ((is_repo_owner  && has_been_shared_out) || is_admin)) { %>
                         <li><a class="op set-folder-permission" href="#">{% trans "Permission" %}</a></li>
                         <% } %>
                         <li><a class="op view-details" href="#">{% trans "Details" %}</a></li>

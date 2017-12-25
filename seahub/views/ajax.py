@@ -282,6 +282,7 @@ def list_lib_dir(request, repo_id):
 
     result["is_repo_owner"] = False
     result["has_been_shared_out"] = False
+    result["is_admin"] = is_repo_admin(username, repo_id)
     if repo_owner == username:
         result["is_repo_owner"] = True
 
@@ -310,7 +311,6 @@ def list_lib_dir(request, repo_id):
         except Exception as e:
             logger.error(e)
 
-    result["is_admin"] = is_repo_admin(username, repo_id)
 
     result["is_virtual"] = repo.is_virtual
     result["repo_name"] = repo.name
