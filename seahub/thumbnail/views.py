@@ -32,7 +32,6 @@ def thumbnail_create(request, repo_id):
 
     return thumbnail src
     """
-
     content_type = 'application/json; charset=utf-8'
     result = {}
 
@@ -124,7 +123,7 @@ def psd_thumbnail_get(request, repo_id, path):
         try:
             with open(thumbnail_file, 'rb') as f:
                 thumbnail = f.read()
-                return HttpResponse(content=thumbnail, 
+                return HttpResponse(content=thumbnail,
                         content_type='image/' + THUMBNAIL_EXTENSION)
         except IOError as e:
             logger.error(e)

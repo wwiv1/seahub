@@ -180,6 +180,22 @@ class ViewLibFileTest(BaseTestCase):
         r = requests.get(raw_path)
         self.assertEqual(400, r.status_code)
 
+    def test_psd_file(self):
+
+        self.login_as(self.user)
+
+        file_path = self.create_file(repo_id=self.repo.id, parent_dir='/',
+                                     filename="test.psd", username=self.user.email)
+
+        url = reverse('view_lib_file', args=[self.repo.id, file_path])
+
+        resp = self.client.get(url)
+        self.assertEqual(200, resp.status_code)
+        self.assertTemplateUsed(resp, 'view_file_psd.html')
+        assert resp.context['filetype'].lower() == 'psd'
+        assert resp.context['err'] == ''
+        assert resp.context['img_next'] is None
+        assert resp.context['img_prev'] is None
     def test_video_file(self):
         self.login_as(self.user)
 

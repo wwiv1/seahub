@@ -21,6 +21,10 @@ class FileTest(BaseTestCase):
                                       parent_dir='/',
                                       filename='test.jpg',
                                       username=self.user.username)
+        self.psd = self.create_file(repo_id=self.repo.id,
+                                      parent_dir='/',
+                                      filename='test.psd',
+                                      username=self.user.username)
         self.doc = self.create_file(repo_id=self.repo.id,
                                     parent_dir='/',
                                     filename='test.doc',
@@ -74,6 +78,11 @@ class FileTest(BaseTestCase):
     def test_can_render_image(self):
         resp = self.client.get(reverse('view_lib_file', args=[
             self.repo.id, self.image]))
+        self.assertEqual(200, resp.status_code)
+
+    def test_can_render_psd(self):
+        resp = self.client.get(reverse('view_lib_file', args=[
+            self.repo.id, self.psd]))
         self.assertEqual(200, resp.status_code)
 
     def test_can_render_doc(self):
