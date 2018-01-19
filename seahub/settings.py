@@ -501,14 +501,6 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard',
         },
-        'request_handler': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_DIR, 'seahub_django_request.log'),
-            'maxBytes': 1024*1024*100, # 100 MB
-            'backupCount': 5,
-            'formatter': 'standard',
-        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -522,7 +514,7 @@ LOGGING = {
             'propagate': True
         },
         'django.request': {
-            'handlers': ['request_handler', 'mail_admins'],
+            'handlers': ['default', 'mail_admins'],
             'level': 'INFO',
             'propagate': False
         },
