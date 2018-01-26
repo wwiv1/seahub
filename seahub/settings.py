@@ -207,7 +207,7 @@ INSTALLED_APPS = (
     'statici18n',
     'constance',
     'constance.backends.database',
-    'post_office',
+#    'post_office',
     'termsandconditions',
 
     'seahub.api2',
@@ -233,6 +233,7 @@ INSTALLED_APPS = (
     'seahub.two_factor',
     'seahub.role_permissions',
     'seahub.trusted_ip',
+    'seahub.trash_cleaned_items',
 )
 
 # Enable or disable multiple storage backends.
